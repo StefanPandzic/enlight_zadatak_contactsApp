@@ -3,8 +3,9 @@
   &:link,
   &:visited {
     text-decoration: none;
-    padding: 1.5rem 4rem;
-    display: inline-block;
+    padding: 1rem 2rem;
+    margin: 1.5rem 0;
+    display: flex;
     transition: all 0.2s;
     font-size: $text-font-size;
     background-color: $color-primary;
@@ -13,18 +14,13 @@
 
     border: none;
     cursor: pointer;
-  }
-
-  &--create-contact {
-    display: flex;
-    padding: 1rem 2rem;
-    margin: 1rem 0 0 2rem;
-    justify-content: space-between;
 
     span {
       margin-left: 0.7rem;
     }
+  }
 
+  &--create-contact {
     &:hover {
       transform: translateY(-3px);
       box-shadow: 0 0.5rem 0.5rem rgba($color-black, 0.2);
@@ -35,9 +31,5 @@
     color: $color-black;
     background-color: transparent;
     font-size: $default-font-size;
-
-    span {
-      margin-left: 0.7rem;
-    }
   }
 }

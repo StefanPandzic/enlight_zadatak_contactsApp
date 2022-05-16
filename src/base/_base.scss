@@ -18,6 +18,5 @@ body {
 .container {
   display: grid;
 
-  grid-template-rows: 63px min-content 1fr;
   grid-template-columns: minmax(25.5rem, max-content) 1fr;
 }
