@@ -1,0 +1,13 @@
+.header {
+  grid-row: 1 / 1;
+  grid-column: 1 / 1;
+
+  display: grid;
+  justify-items: start;
+  align-items: center;
+}
+
+.logo {
+  width: 16.5rem;
+  margin-left: 2rem;
+}

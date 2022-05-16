@@ -1,0 +1,25 @@
+.link:link,
+.link:visited {
+  font-size: $default-font-size;
+  text-decoration: none;
+  color: $color-black;
+
+  justify-self: center;
+
+  display: flex;
+  padding: 0.7rem 10rem 0.7rem 1rem;
+  border-radius: 4px;
+  align-items: center;
+  text-align: left;
+
+  span {
+    margin-left: 0.7rem;
+    flex-grow: 1;
+  }
+}
+
+.link {
+  &--active {
+    background-color: $color-secondary;
+  }
+}

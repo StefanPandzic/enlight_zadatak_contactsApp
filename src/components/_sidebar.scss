@@ -1,0 +1,10 @@
+.sidebar {
+  grid-row: 2 / -1;
+
+  display: grid;
+
+  grid-template-rows: 10rem repeat(2, 1fr);
+
+  justify-items: start;
+  align-items: start;
+}

@@ -1,0 +1,43 @@
+.btn {
+  &,
+  &:link,
+  &:visited {
+    text-decoration: none;
+    padding: 1.5rem 4rem;
+    display: inline-block;
+    transition: all 0.2s;
+    font-size: $text-font-size;
+    background-color: $color-primary;
+    color: $color-white;
+    border-radius: 0.4rem;
+
+    border: none;
+    cursor: pointer;
+  }
+
+  &--create-contact {
+    display: flex;
+    padding: 1rem 2rem;
+    margin: 1rem 0 0 2rem;
+    justify-content: space-between;
+
+    span {
+      margin-left: 0.7rem;
+    }
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0.5rem 0.5rem rgba($color-black, 0.2);
+    }
+  }
+
+  &--create-label {
+    color: $color-black;
+    background-color: transparent;
+    font-size: $default-font-size;
+
+    span {
+      margin-left: 0.7rem;
+    }
+  }
+}
