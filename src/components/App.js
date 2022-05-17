@@ -29,6 +29,13 @@ const App = () => {
       phone_number: "+38167522535",
       email: "deusex@gmail.com",
     },
+    {
+      id: 4,
+      avatar: `${faker.image.image()}`,
+      name: "Lejla Pandzic",
+      phone_number: "+38132423565",
+      email: "layla@gmail.com",
+    },
   ]);
 
   return (
@@ -47,10 +54,14 @@ const App = () => {
           <a href="#" className="link link--active">
             <Icon name="contact" size={22} />
             <span>Contacts</span>
+            <div className="link__notification link__notification--active">
+              8
+            </div>
           </a>
           <a href="#" className="link">
             <Icon name="star" size={22} />
             <span>Favorites</span>
+            <div className="link__notification">3</div>
           </a>
           <div className="labels">
             <h4 className="header-4">Labels</h4>
@@ -60,23 +71,21 @@ const App = () => {
               <a href="#" className="link">
                 <Icon name="ribbon" size={22} />
                 <span>Work</span>
-                <div className="notification">2</div>
+                <div className="link__notification">2</div>
               </a>
             </li>
             <li className="labels__item">
-              {" "}
               <a href="#" className="link">
                 <Icon name="ribbon" size={22} />
                 <span>Family</span>
-                <div className="notification">6</div>
+                <div className="link__notification">6</div>
               </a>
             </li>
             <li className="labels__item">
-              {" "}
               <a href="#" className="link">
                 <Icon name="ribbon" size={22} />
                 <span>Friends</span>
-                <div className="notification">4</div>
+                <div className="link__notification">4</div>
               </a>
             </li>
           </ul>

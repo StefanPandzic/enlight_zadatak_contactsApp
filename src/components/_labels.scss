@@ -1,4 +1,5 @@
-.notification {
-  background-color: red;
-  flex-grow: 1;
+.labels {
+  &__list {
+    list-style: none;
+  }
 }
