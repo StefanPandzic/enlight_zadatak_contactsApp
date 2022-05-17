@@ -1,0 +1,17 @@
+.contacts {
+  font-size: $default-font-size;
+  width: 100%;
+  border: 1px solid $color-border;
+  border-radius: 4px;
+
+  &__table-head {
+    background-color: $color-secondary;
+    color: $color-tertiary;
+    text-transform: uppercase;
+    text-align: left;
+
+    th {
+      padding: 2rem 1rem;
+    }
+  }
+}

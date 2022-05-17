@@ -1,0 +1,35 @@
+.contact-item {
+  color: $color-text-secondary;
+
+  td {
+    padding: 1rem 1rem;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__full-name {
+    display: flex;
+    align-items: center;
+  }
+
+  &__image {
+    width: 4rem;
+    height: 4rem;
+
+    img {
+      background-size: cover;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
+
+  &__name {
+    margin-left: 2rem;
+  }
+
+  &__control {
+    a {
+      padding: 0 0.5rem;
+    }
+  }
+}

@@ -1,80 +1,32 @@
 import React from "react";
 import { useState } from "react";
 import logo from "../images/logo.png";
+import faker from "faker";
 import ContactsList from "./ContactsList";
 import Icon from "./Icons";
-/*
-const contacts = [
-
-    {
-        id: 4,
-        first_name: "Jason",
-        last_name: "Denton",
-        phone_number: "065402602",
-        email: 'sdfsdfs@gmail.com',
-        close_friend: true
-    },
-    {
-        id: 5,
-        first_name: "Stefan",
-        last_name: "Pandzc",
-        phone_number: "060562562",
-        email: 'sstefan@gmail.com',
-        close_friend: false
-    },
-    {
-        id: 6,
-        first_name: "Paul",
-        last_name: "Denton",
-        phone_number: "067522535",
-        email: 'deusex@gmail.com',
-        close_friend: true
-    },
-    {
-        id: 7,
-        first_name: "Jason",
-        last_name: "Denton",
-        phone_number: "065402602",
-        email: 'sdfsdfs@gmail.com',
-        close_friend: true
-    },
-    {
-        id: 8,
-        first_name: "Stefan",
-        last_name: "Pandzc",
-        phone_number: "060562562",
-        email: 'sstefan@gmail.com',
-        close_friend: false
-    },
-    {
-        id: 9,
-        first_name: "Paul",
-        last_name: "Denton",
-        phone_number: "067522535",
-        email: 'deusex@gmail.com',
-        close_friend: true
-    },
-]*/
 
 const App = () => {
   const [showAddContact, setShowAddContact] = useState(false);
   const [contacts, setContacts] = useState([
     {
       id: 1,
-      name: "Jason",
-      phone_number: "065402602",
+      avatar: `${faker.image.image()}`,
+      name: "Jason Denton",
+      phone_number: "+38165402602",
       email: "sdfsdfs@gmail.com",
     },
     {
       id: 2,
-      name: "Stefan",
-      phone_number: "060562562",
+      avatar: `${faker.image.image()}`,
+      name: "Stefan Pandzic",
+      phone_number: "+38160562562",
       email: "sstefan@gmail.com",
     },
     {
       id: 3,
-      name: "Paul",
-      phone_number: "067522535",
+      avatar: `${faker.image.image()}`,
+      name: "Paul Denton",
+      phone_number: "+38167522535",
       email: "deusex@gmail.com",
     },
   ]);
@@ -144,7 +96,7 @@ const App = () => {
         <section className="heading">
           <h1 className="header-1">Heading</h1>
         </section>
-        <ContactsList />
+        <ContactsList contacts={contacts} />
       </main>
     </div>
   );
