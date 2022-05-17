@@ -4,9 +4,11 @@ import logo from "../images/logo.png";
 import faker from "faker";
 import ContactsList from "./ContactsList";
 import Icon from "./Icons";
+import Button from "./Button";
+import CreateContact from "./CreateContact";
 
 const App = () => {
-  const [showAddContact, setShowAddContact] = useState(false);
+  const [showCreateContact, setShowCreateContact] = useState(false);
   const [contacts, setContacts] = useState([
     {
       id: 1,
@@ -38,6 +40,18 @@ const App = () => {
     },
   ]);
 
+  const onCreate = () => {
+    setShowCreateContact(!showCreateContact);
+
+    if (showCreateContact) {
+      document.querySelector(".contacts").classList.remove("hidden");
+      document.querySelector(".create-contact").classList.add("hidden");
+    } else {
+      document.querySelector(".contacts").classList.add("hidden");
+      document.querySelector(".create-contact").classList.remove("hidden");
+    }
+  };
+
   return (
     <div className="container">
       <div className="sidebar">
@@ -45,10 +59,11 @@ const App = () => {
           <img src={logo} alt="Logo" className="logo" />
         </header>
         <div className="sidebar__cta">
-          <button className="btn btn--create-contact">
-            <Icon name="plus" size={12} />
-            <span>Create contact</span>
-          </button>
+          <Button
+            onCreate={onCreate}
+            text="Create contact"
+            className="btn btn--create-contact"
+          />
         </div>
         <nav className="sidebar__nav">
           <a href="#" className="link link--active">
@@ -106,6 +121,7 @@ const App = () => {
           <h1 className="header-1">Heading</h1>
         </section>
         <ContactsList contacts={contacts} />
+        <CreateContact />
       </main>
     </div>
   );

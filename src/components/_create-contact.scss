@@ -1,0 +1,56 @@
+.create-contact {
+  display: grid;
+
+  font-size: $default-font-size;
+  grid-template-rows: repeat(5, max-content);
+
+  row-gap: 2rem;
+
+  grid-template-columns: 30rem;
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__photo {
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    grid-template-columns: min-content 1fr;
+
+    align-items: center;
+
+    label {
+      grid-row: 1 / 2;
+      grid-column: 1 / -1;
+    }
+
+    button {
+      margin-left: 2rem;
+    }
+  }
+
+  &__inputs {
+    display: grid;
+
+    row-gap: 0.5rem;
+
+    input {
+      padding: 0.5rem;
+      background-color: $color-white;
+      font-size: $default-font-size;
+      color: $color-text-primary;
+      border: 2px solid $color-border;
+      border-radius: 4px;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+
+    button {
+      margin-right: 1rem;
+    }
+  }
+}

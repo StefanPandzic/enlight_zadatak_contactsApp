@@ -1,0 +1,41 @@
+.dropdown {
+  position: relative;
+
+  &__content {
+    display: none;
+    position: absolute;
+    //display: grid;
+    z-index: 1;
+    background-color: $color-white;
+    box-shadow: 0 0.5rem 0.5rem rgba($color-black, 0.2);
+
+    top: 90%;
+
+    a:visited,
+    :link {
+      padding: 1.2rem 2rem;
+      text-decoration: none;
+      color: $color-black;
+      display: flex;
+      justify-content: start;
+
+      &:hover {
+        background-color: $color-secondary;
+      }
+
+      span {
+        margin-left: 1rem;
+      }
+    }
+  }
+}
+
+.checkmark {
+  &--show {
+    display: block;
+  }
+
+  &--hide {
+    visibility: hidden;
+  }
+}

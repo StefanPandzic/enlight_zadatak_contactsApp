@@ -20,3 +20,7 @@ body {
 
   grid-template-columns: minmax(25.5rem, max-content) 1fr;
 }
+
+.hidden {
+  display: none !important;
+}
