@@ -4,16 +4,13 @@ import logo from "../images/logo.png";
 import faker from "faker";
 import ContactsList from "./ContactsList";
 import Icon from "./Icons";
-import Button from "./Button";
 import CreateContact from "./CreateContact";
 import EditContact from "./EditContact";
 import Route from "./Route";
-import Link from "./Link";
 
 const App = () => {
-  const [filterContacts, setFilterContacts] = useState("all");
-  const [currentContactId, setcurrentContactId] = useState(0);
-  const [contacts, setContacts] = useState([
+  //Data
+  const contactData = [
     {
       id: 1,
       avatar: `${faker.image.image()}`,
@@ -46,11 +43,21 @@ const App = () => {
       email: "layla@gmail.com",
       favorite: true,
     },
-  ]);
+  ];
 
-  useEffect(() => {
-    //console.log(currentContactId);
-  }, [currentContactId]);
+  const initialFormState = {
+    id: null,
+    name: "",
+    phone_number: "",
+    email: "",
+  };
+
+  //Setting State
+  const [contacts, setContacts] = useState(contactData);
+  const [currentContact, setCurrentContact] = useState(initialFormState);
+  const [editing, setEditing] = useState(false);
+  const [showCreateContact, setShowCreateContact] = useState(false);
+  const [title, setTitle] = useState("Contacts");
 
   // Add Contact
   const addContact = (contact) => {
@@ -59,23 +66,50 @@ const App = () => {
     setContacts([...contacts, newContact]);
   };
 
-  // Delete Task
+  // Delete Contact
   const deleteContact = (id) => {
+    setEditing(false);
     setContacts(contacts.filter((contact) => contact.id !== id));
   };
 
-  const editContact = (id) => {
-    /*setcurrentContact(
-      contacts.map((contact) => {
-        if (contact.id === id) {
-          console.log(id);
-        }
-      })
-    );*/
-
-    //currentContactId = id;
-    setcurrentContactId(id);
+  // Edit Contact
+  const editContact = (id, updatedContact) => {
+    setEditing(false);
+    setTitle("Contacts");
+    setContacts(
+      contacts.map((contact) => (contact.id === id ? updatedContact : contact))
+    );
   };
+
+  //TODO Fix BUG ShowCreate
+
+  const editRow = (contact) => {
+    setEditing(true);
+    setTitle("Edit Contact");
+
+    setCurrentContact({
+      id: contact.id,
+      name: contact.name,
+      phone_number: contact.phone_number,
+      email: contact.email,
+    });
+  };
+
+  const onCreate = () => {
+    setShowCreateContact(!showCreateContact);
+
+    if (showCreateContact) {
+      setTitle("Contacts");
+      document.querySelector(".contacts").classList.remove("hidden");
+      document.querySelector(".create-contact").classList.add("hidden");
+    } else {
+      setTitle("Create Contact");
+      document.querySelector(".contacts").classList.add("hidden");
+      document.querySelector(".create-contact").classList.remove("hidden");
+    }
+  };
+
+  //TODO Implement Search
 
   return (
     <div className="container">
@@ -84,27 +118,28 @@ const App = () => {
           <img src={logo} alt="Logo" className="logo" />
         </header>
         <div className="sidebar__cta">
-          <Link href="/create-contact">
-            <Button
-              text="Create contact"
-              iconName="plus"
-              className="btn btn--create-contact"
-            />
-          </Link>
+          <button
+            type="button"
+            className="btn btn--create-contact"
+            onClick={onCreate}
+          >
+            <Icon name="plus" size={12} />
+            <span>Create contact</span>
+          </button>
         </div>
         <nav className="sidebar__nav">
-          <Link className="link link--active" href="/">
+          <a className="link link--active" href="/">
             <Icon name="contact" size={22} />
             <span>Contacts</span>
             <div className="link__notification link__notification--active">
               {contacts.length}
             </div>
-          </Link>
-          <Link className="link" href="/favorites">
+          </a>
+          <a className="link" href="/favorites">
             <Icon name="star" size={22} />
             <span>Favorites</span>
             <div className="link__notification">{contacts.length}</div>
-          </Link>
+          </a>
           <div className="labels">
             <h4 className="header-4">Labels</h4>
           </div>
@@ -144,38 +179,36 @@ const App = () => {
           </button>
           <input type="text" className="search__input" placeholder="Search" />
         </form>
-        <Route path="/">
-          <section className="heading">
-            <h1 className="header-1">Contacts</h1>
-          </section>
-          <ContactsList
-            onDelete={deleteContact}
-            onEdit={editContact}
-            contacts={contacts}
-            filterContacts={filterContacts}
+
+        <section className="heading">
+          <h1 className="header-1">{title}</h1>
+        </section>
+        <ContactsList
+          onDelete={deleteContact}
+          onEdit={editRow}
+          contacts={contacts}
+        />
+        {editing ? (
+          <EditContact
+            editing={editing}
+            setEditing={setEditing}
+            title={title}
+            setTitle={setTitle}
+            currentContact={currentContact}
+            editContact={editContact}
           />
-        </Route>
-        <Route path="/create-contact">
-          <section className="heading">
-            <h1 className="header-1">Create Contact</h1>
-          </section>
-          <CreateContact onAdd={addContact} />
-        </Route>
-        <Route path={`/edit-contact`}>
-          <section className="heading">
-            <h1 className="header-1">Edit Contact</h1>
-          </section>
-          <EditContact currentContact={currentContactId} />
-        </Route>
+        ) : (
+          <CreateContact onAdd={addContact} showCreateContact={onCreate} />
+        )}
+
         <Route path="/favorites">
           <section className="heading">
             <h1 className="header-1">Favorites</h1>
           </section>
           <ContactsList
             onDelete={deleteContact}
-            onEdit={editContact}
+            onEdit={editRow}
             contacts={contacts}
-            filterContacts={filterContacts}
           />
         </Route>
       </main>

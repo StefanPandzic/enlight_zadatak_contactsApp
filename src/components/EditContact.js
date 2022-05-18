@@ -1,29 +1,44 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import avatar from "../images/avatar.png";
 import Icon from "./Icons";
-import Link from "./Link";
-import Button from "./Button";
 
-const EditContact = ({ currentContact }) => {
+const EditContact = (props) => {
+  const [contact, setContact] = useState(props.currentContact);
+
+  useEffect(() => {
+    setContact(props.currentContact);
+    console.log("effect", props.currentContact);
+  }, [props]);
   //const [photo, setPhoto] = useState('');
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone_number, setPhone] = useState("");
+  //const [name, setName] = useState("");
+  //const [email, setEmail] = useState("");
+  //const [phone_number, setPhone] = useState("");
   //const [label, setLabel] = useState('');
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+
+    setContact({ ...contact, [name]: value });
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    setName("");
+    props.editContact(contact.id, contact);
+
+    /*setName("");
     setEmail("");
-    setPhone("");
+    setPhone("");*/
+    props.setEditing();
   };
 
   const onCancel = () => {
-    setName("");
+    props.setEditing(false);
+    props.setTitle("Contacts");
+    /* setName("");
     setEmail("");
-    setPhone("");
+    setPhone("");*/
   };
 
   return (
@@ -69,8 +84,9 @@ const EditContact = ({ currentContact }) => {
         <input
           type="text"
           placeholder=""
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          name="name"
+          value={contact.name}
+          onChange={handleInputChange}
         />
       </div>
       <div className="create-contact__inputs">
@@ -79,8 +95,9 @@ const EditContact = ({ currentContact }) => {
           id="email_address"
           type="text"
           placeholder=""
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name="email"
+          value={contact.email}
+          onChange={handleInputChange}
         />
       </div>
       <div className="create-contact__inputs">
@@ -88,15 +105,16 @@ const EditContact = ({ currentContact }) => {
         <input
           type="text"
           placeholder=""
-          value={phone_number}
-          onChange={(e) => setPhone(e.target.value)}
+          name="phone_number"
+          value={contact.phone_number}
+          onChange={handleInputChange}
         />
       </div>
       <div className="create-contact__buttons">
-        <Link href="/" className="link">
-          <Button text="Cancel" className="btn btn--white" onClick={onCancel} />
-        </Link>
-        <input type="submit" value="Edit" className="btn btn-input" />
+        <button type="button" className="btn btn--white" onClick={onCancel}>
+          Cancel
+        </button>
+        <input type="submit" value="Save" className="btn btn-input" />
       </div>
     </form>
   );

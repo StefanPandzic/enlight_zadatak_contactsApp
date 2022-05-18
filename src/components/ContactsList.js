@@ -3,15 +3,15 @@ import ContactItem from "./ContactItem";
 
 const ContactsList = ({ onDelete, onEdit, contacts, filterContacts }) => {
   const renderedContactsList = contacts.map((contact) => {
-    if (filterContacts === "all") {
-      return (
-        <ContactItem onDelete={onDelete} onEdit={onEdit} contact={contact} />
-      );
-    } else if (filterContacts === "favorites") {
-      if (contact.favorite) {
-        return <ContactItem contact={contact} />;
-      }
-    }
+    //if (filterContacts === "all") {
+    return (
+      <ContactItem onDelete={onDelete} onEdit={onEdit} contact={contact} />
+    );
+    // } else if (filterContacts === "favorites") {
+    // if (contact.favorite) {
+    //    return <ContactItem contact={contact} />;
+    //  }
+    //   }
   });
 
   return (

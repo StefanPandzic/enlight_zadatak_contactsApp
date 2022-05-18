@@ -2,10 +2,16 @@ import React from "react";
 import { useState } from "react";
 import avatar from "../images/avatar.png";
 import Icon from "./Icons";
-import Link from "./Link";
-import Button from "./Button";
 
-const CreateContact = ({ onAdd }) => {
+const CreateContact = ({ onAdd, showCreateContact }) => {
+  /* const initialFormState = {
+    id: null,
+    avatar: "",
+    name: "",
+    phone_number: "",
+    email: "",
+  };
+  const [contact, setContact] = useState(initialFormState)*/
   //const [photo, setPhoto] = useState('');
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,16 +26,20 @@ const CreateContact = ({ onAdd }) => {
     setName("");
     setEmail("");
     setPhone("");
+
+    showCreateContact();
   };
 
   const onCancel = () => {
     setName("");
     setEmail("");
     setPhone("");
+
+    showCreateContact();
   };
 
   return (
-    <form className="create-contact" onSubmit={onSubmit}>
+    <form className="create-contact hidden" onSubmit={onSubmit}>
       <div className="create-contact__photo">
         <label>Photo</label>
         <img src={avatar} alt="Profile Photo" />
@@ -95,9 +105,10 @@ const CreateContact = ({ onAdd }) => {
         />
       </div>
       <div className="create-contact__buttons">
-        <Link href="/" className="link">
-          <Button text="Cancel" className="btn btn--white" onClick={onCancel} />
-        </Link>
+        <button type="button" className="btn btn--white" onClick={onCancel}>
+          Cancel
+        </button>
+
         <input type="submit" value="Create" className="btn btn-input" />
       </div>
     </form>
