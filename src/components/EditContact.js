@@ -3,18 +3,17 @@ import { useState } from "react";
 import avatar from "../images/avatar.png";
 import Icon from "./Icons";
 
-const CreateContact = ({ onAdd, showCreateContact }) => {
+const EditContact = ({ showEditContact, id }) => {
   //const [photo, setPhoto] = useState('');
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone_number, setPhone] = useState("");
+  const [name, setName] = useState(id.name);
+  const [email, setEmail] = useState(id.email);
+  const [phone_number, setPhone] = useState(id.phone_number);
   //const [label, setLabel] = useState('');
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    showCreateContact();
-    onAdd({ name, email, phone_number });
+    showEditContact();
 
     setName("");
     setEmail("");
@@ -22,7 +21,7 @@ const CreateContact = ({ onAdd, showCreateContact }) => {
   };
 
   const onCancel = () => {
-    showCreateContact();
+    showEditContact();
 
     setName("");
     setEmail("");
@@ -105,4 +104,4 @@ const CreateContact = ({ onAdd, showCreateContact }) => {
   );
 };
 
-export default CreateContact;
+export default EditContact;
