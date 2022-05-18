@@ -2,18 +2,18 @@ import React from "react";
 import { useState } from "react";
 import avatar from "../images/avatar.png";
 import Icon from "./Icons";
+import Link from "./Link";
+import Button from "./Button";
 
-const EditContact = ({ showEditContact, id }) => {
+const EditContact = ({ currentContact }) => {
   //const [photo, setPhoto] = useState('');
-  const [name, setName] = useState(id.name);
-  const [email, setEmail] = useState(id.email);
-  const [phone_number, setPhone] = useState(id.phone_number);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone_number, setPhone] = useState("");
   //const [label, setLabel] = useState('');
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    showEditContact();
 
     setName("");
     setEmail("");
@@ -21,15 +21,13 @@ const EditContact = ({ showEditContact, id }) => {
   };
 
   const onCancel = () => {
-    showEditContact();
-
     setName("");
     setEmail("");
     setPhone("");
   };
 
   return (
-    <form className="create-contact hidden" onSubmit={onSubmit}>
+    <form className="create-contact" onSubmit={onSubmit}>
       <div className="create-contact__photo">
         <label>Photo</label>
         <img src={avatar} alt="Profile Photo" />
@@ -95,10 +93,10 @@ const EditContact = ({ showEditContact, id }) => {
         />
       </div>
       <div className="create-contact__buttons">
-        <button type="button" className="btn btn--white" onClick={onCancel}>
-          Cancel
-        </button>
-        <input type="submit" value="Create" className="btn btn-input" />
+        <Link href="/" className="link">
+          <Button text="Cancel" className="btn btn--white" onClick={onCancel} />
+        </Link>
+        <input type="submit" value="Edit" className="btn btn-input" />
       </div>
     </form>
   );

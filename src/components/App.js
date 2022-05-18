@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "../images/logo.png";
 import faker from "faker";
 import ContactsList from "./ContactsList";
@@ -7,11 +7,12 @@ import Icon from "./Icons";
 import Button from "./Button";
 import CreateContact from "./CreateContact";
 import EditContact from "./EditContact";
+import Route from "./Route";
+import Link from "./Link";
 
 const App = () => {
-  const [showCreateContact, setShowCreateContact] = useState(false);
-  const [title, setTitle] = useState("Contacts");
   const [filterContacts, setFilterContacts] = useState("all");
+  const [currentContactId, setcurrentContactId] = useState(0);
   const [contacts, setContacts] = useState([
     {
       id: 1,
@@ -47,17 +48,9 @@ const App = () => {
     },
   ]);
 
-  const allContacts = (e) => {
-    e.preventDefault();
-    setFilterContacts("all");
-    setTitle("Contacts");
-  };
-
-  const favoriteContacts = (e) => {
-    e.preventDefault();
-    setFilterContacts("favorites");
-    setTitle("Favorites");
-  };
+  useEffect(() => {
+    //console.log(currentContactId);
+  }, [currentContactId]);
 
   // Add Contact
   const addContact = (contact) => {
@@ -71,34 +64,17 @@ const App = () => {
     setContacts(contacts.filter((contact) => contact.id !== id));
   };
 
-  const onEdit = (id) => {
-    setShowCreateContact(!showCreateContact);
+  const editContact = (id) => {
+    /*setcurrentContact(
+      contacts.map((contact) => {
+        if (contact.id === id) {
+          console.log(id);
+        }
+      })
+    );*/
 
-    if (showCreateContact) {
-      setTitle("Contacts");
-      document.querySelector(".contacts").classList.remove("hidden");
-      document.querySelector(".create-contact").classList.add("hidden");
-    } else {
-      setTitle("Edit");
-      document.querySelector(".contacts").classList.add("hidden");
-      document.querySelector(".create-contact").classList.remove("hidden");
-      const doc = (document.getElementById("email_address").value = "sss");
-      console.log(doc);
-    }
-  };
-
-  const onCreate = () => {
-    setShowCreateContact(!showCreateContact);
-
-    if (showCreateContact) {
-      setTitle("Contacts");
-      document.querySelector(".contacts").classList.remove("hidden");
-      document.querySelector(".create-contact").classList.add("hidden");
-    } else {
-      setTitle("Create Contact");
-      document.querySelector(".contacts").classList.add("hidden");
-      document.querySelector(".create-contact").classList.remove("hidden");
-    }
+    //currentContactId = id;
+    setcurrentContactId(id);
   };
 
   return (
@@ -108,35 +84,27 @@ const App = () => {
           <img src={logo} alt="Logo" className="logo" />
         </header>
         <div className="sidebar__cta">
-          <Button
-            onCreate={onCreate}
-            text="Create contact"
-            className="btn btn--create-contact"
-          />
+          <Link href="/create-contact">
+            <Button
+              text="Create contact"
+              iconName="plus"
+              className="btn btn--create-contact"
+            />
+          </Link>
         </div>
         <nav className="sidebar__nav">
-          <a
-            href="/"
-            onClick={allContacts}
-            id="link-all"
-            className="link link--active"
-          >
+          <Link className="link link--active" href="/">
             <Icon name="contact" size={22} />
             <span>Contacts</span>
             <div className="link__notification link__notification--active">
               {contacts.length}
             </div>
-          </a>
-          <a
-            href="/"
-            onClick={favoriteContacts}
-            id="link-favorite"
-            className="link"
-          >
+          </Link>
+          <Link className="link" href="/favorites">
             <Icon name="star" size={22} />
             <span>Favorites</span>
             <div className="link__notification">{contacts.length}</div>
-          </a>
+          </Link>
           <div className="labels">
             <h4 className="header-4">Labels</h4>
           </div>
@@ -176,17 +144,40 @@ const App = () => {
           </button>
           <input type="text" className="search__input" placeholder="Search" />
         </form>
-        <section className="heading">
-          <h1 className="header-1">{title}</h1>
-        </section>
-        <ContactsList
-          onDelete={deleteContact}
-          onEdit={onEdit}
-          contacts={contacts}
-          filterContacts={filterContacts}
-        />
-        <CreateContact showCreateContact={onCreate} onAdd={addContact} />
-        <EditContact showEditContact={onEdit} onEdit={onEdit} />
+        <Route path="/">
+          <section className="heading">
+            <h1 className="header-1">Contacts</h1>
+          </section>
+          <ContactsList
+            onDelete={deleteContact}
+            onEdit={editContact}
+            contacts={contacts}
+            filterContacts={filterContacts}
+          />
+        </Route>
+        <Route path="/create-contact">
+          <section className="heading">
+            <h1 className="header-1">Create Contact</h1>
+          </section>
+          <CreateContact onAdd={addContact} />
+        </Route>
+        <Route path={`/edit-contact`}>
+          <section className="heading">
+            <h1 className="header-1">Edit Contact</h1>
+          </section>
+          <EditContact currentContact={currentContactId} />
+        </Route>
+        <Route path="/favorites">
+          <section className="heading">
+            <h1 className="header-1">Favorites</h1>
+          </section>
+          <ContactsList
+            onDelete={deleteContact}
+            onEdit={editContact}
+            contacts={contacts}
+            filterContacts={filterContacts}
+          />
+        </Route>
       </main>
     </div>
   );

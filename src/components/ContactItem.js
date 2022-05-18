@@ -1,7 +1,14 @@
 import React from "react";
 import Icon from "./Icons";
+import Link from "./Link";
 
 const ContactItem = ({ onDelete, onEdit, contact }) => {
+  //const ref = useRef();
+  //const editContact = e;
+  const editContact = () => {
+    onEdit(contact.id);
+  };
+
   return (
     <tr className="contact-item">
       <td className="contact-item__full-name">
@@ -19,9 +26,14 @@ const ContactItem = ({ onDelete, onEdit, contact }) => {
         <a className="trash" onClick={() => onDelete(contact.id)}>
           <Icon name="trash" size={22} />
         </a>
-        <a className="edit" onClick={() => onEdit(contact.id)}>
+        <Link
+          href={`/edit-contact`}
+          sendContact={contact}
+          editContact={editContact}
+          className="edit"
+        >
           <Icon name="pen" size={22} />
-        </a>
+        </Link>
       </td>
     </tr>
   );
