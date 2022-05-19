@@ -1,8 +1,8 @@
 import React from "react";
 import ContactItem from "./ContactItem";
 
-const ContactsList = ({ onDelete, onEdit, contacts, filterContacts }) => {
-  const renderedContactsList = contacts.map((contact) => {
+const ContactsList = ({ onDelete, onEdit, foundContacts, filterContacts }) => {
+  const renderedContactsList = foundContacts.map((contact) => {
     //if (filterContacts === "all") {
     return (
       <ContactItem onDelete={onDelete} onEdit={onEdit} contact={contact} />

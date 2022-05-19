@@ -7,6 +7,7 @@ import Icon from "./Icons";
 import CreateContact from "./CreateContact";
 import EditContact from "./EditContact";
 import Route from "./Route";
+import SearchBar from "./SearchBar";
 
 const App = () => {
   //Data
@@ -43,6 +44,14 @@ const App = () => {
       email: "layla@gmail.com",
       favorite: true,
     },
+    {
+      id: 5,
+      avatar: `${faker.image.image()}`,
+      name: "Stefan Carter",
+      phone_number: "+38133234565",
+      email: "carter@gmail.com",
+      favorite: true,
+    },
   ];
 
   const initialFormState = {
@@ -56,8 +65,14 @@ const App = () => {
   const [contacts, setContacts] = useState(contactData);
   const [currentContact, setCurrentContact] = useState(initialFormState);
   const [editing, setEditing] = useState(false);
-  const [showCreateContact, setShowCreateContact] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("Contacts");
+
+  const [foundContacts, setFoundContacts] = useState(contacts);
+
+  useEffect(() => {
+    updateContactList(contacts);
+  }, [contacts, editing]);
 
   // Add Contact
   const addContact = (contact) => {
@@ -74,18 +89,20 @@ const App = () => {
 
   // Edit Contact
   const editContact = (id, updatedContact) => {
-    setEditing(false);
+    /* setEditing(false);
     setTitle("Contacts");
+    setShowForm(false);
+*/
     setContacts(
       contacts.map((contact) => (contact.id === id ? updatedContact : contact))
     );
   };
 
-  //TODO Fix BUG ShowCreate
-
   const editRow = (contact) => {
     setEditing(true);
+    setShowForm(true);
     setTitle("Edit Contact");
+    document.querySelector(".contacts").classList.add("hidden");
 
     setCurrentContact({
       id: contact.id,
@@ -96,20 +113,17 @@ const App = () => {
   };
 
   const onCreate = () => {
-    setShowCreateContact(!showCreateContact);
+    setShowForm(true);
 
-    if (showCreateContact) {
-      setTitle("Contacts");
-      document.querySelector(".contacts").classList.remove("hidden");
-      document.querySelector(".create-contact").classList.add("hidden");
-    } else {
-      setTitle("Create Contact");
+    if (!editing) {
       document.querySelector(".contacts").classList.add("hidden");
       document.querySelector(".create-contact").classList.remove("hidden");
     }
   };
 
-  //TODO Implement Search
+  const updateContactList = (results) => {
+    setFoundContacts(results);
+  };
 
   return (
     <div className="container">
@@ -138,7 +152,7 @@ const App = () => {
           <a className="link" href="/favorites">
             <Icon name="star" size={22} />
             <span>Favorites</span>
-            <div className="link__notification">{contacts.length}</div>
+            <div className="link__notification">{foundContacts.length}</div>
           </a>
           <div className="labels">
             <h4 className="header-4">Labels</h4>
@@ -173,13 +187,7 @@ const App = () => {
         </nav>
       </div>
       <main className="main-section">
-        <form action="#" className="search">
-          <button className="search__button">
-            <Icon name="search" size={16} />
-          </button>
-          <input type="text" className="search__input" placeholder="Search" />
-        </form>
-
+        <SearchBar contacts={contacts} updateContactList={updateContactList} />
         <section className="heading">
           <h1 className="header-1">{title}</h1>
         </section>
@@ -187,6 +195,7 @@ const App = () => {
           onDelete={deleteContact}
           onEdit={editRow}
           contacts={contacts}
+          foundContacts={foundContacts}
         />
         {editing ? (
           <EditContact
@@ -196,9 +205,14 @@ const App = () => {
             setTitle={setTitle}
             currentContact={currentContact}
             editContact={editContact}
+            setShowForm={setShowForm}
           />
         ) : (
-          <CreateContact onAdd={addContact} showCreateContact={onCreate} />
+          <CreateContact
+            onAdd={addContact}
+            setTitle={setTitle}
+            setShowForm={setShowForm}
+          />
         )}
 
         <Route path="/favorites">

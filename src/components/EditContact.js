@@ -27,26 +27,32 @@ const EditContact = (props) => {
 
     props.editContact(contact.id, contact);
 
+    props.setEditing(false);
+    props.setTitle("Contacts");
+    props.setShowForm(false);
+    document.querySelector(".contacts").classList.remove("hidden");
     /*setName("");
     setEmail("");
     setPhone("");*/
-    props.setEditing();
+    //props.setEditing();
   };
 
   const onCancel = () => {
     props.setEditing(false);
     props.setTitle("Contacts");
+    props.setShowForm(false);
+    document.querySelector(".contacts").classList.remove("hidden");
     /* setName("");
     setEmail("");
     setPhone("");*/
   };
 
   return (
-    <form className="create-contact" onSubmit={onSubmit}>
-      <div className="create-contact__photo">
+    <form className="form-contact edit-contact" onSubmit={onSubmit}>
+      <div className="form-contact__photo">
         <label>Photo</label>
         <img src={avatar} alt="Profile Photo" />
-        <div className="create-contact__container">
+        <div className="form-contact__container">
           <button type="button" className="btn btn--white">
             Change
           </button>
@@ -79,7 +85,7 @@ const EditContact = (props) => {
         </div>
       </div>
 
-      <div className="create-contact__inputs">
+      <div className="form-contact__inputs">
         <label>Name</label>
         <input
           type="text"
@@ -89,7 +95,7 @@ const EditContact = (props) => {
           onChange={handleInputChange}
         />
       </div>
-      <div className="create-contact__inputs">
+      <div className="form-contact__inputs">
         <label>Email address</label>
         <input
           id="email_address"
@@ -100,7 +106,7 @@ const EditContact = (props) => {
           onChange={handleInputChange}
         />
       </div>
-      <div className="create-contact__inputs">
+      <div className="form-contact__inputs">
         <label>Phone number</label>
         <input
           type="text"
@@ -110,7 +116,7 @@ const EditContact = (props) => {
           onChange={handleInputChange}
         />
       </div>
-      <div className="create-contact__buttons">
+      <div className="form-contact__buttons">
         <button type="button" className="btn btn--white" onClick={onCancel}>
           Cancel
         </button>

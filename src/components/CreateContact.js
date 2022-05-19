@@ -3,7 +3,7 @@ import { useState } from "react";
 import avatar from "../images/avatar.png";
 import Icon from "./Icons";
 
-const CreateContact = ({ onAdd, showCreateContact }) => {
+const CreateContact = ({ onAdd, setTitle, setShowForm }) => {
   /* const initialFormState = {
     id: null,
     avatar: "",
@@ -27,7 +27,10 @@ const CreateContact = ({ onAdd, showCreateContact }) => {
     setEmail("");
     setPhone("");
 
-    showCreateContact();
+    setShowForm(false);
+    setTitle("Contacts");
+    document.querySelector(".contacts").classList.remove("hidden");
+    document.querySelector(".create-contact").classList.add("hidden");
   };
 
   const onCancel = () => {
@@ -35,15 +38,18 @@ const CreateContact = ({ onAdd, showCreateContact }) => {
     setEmail("");
     setPhone("");
 
-    showCreateContact();
+    setShowForm(false);
+    setTitle("Contacts");
+    document.querySelector(".contacts").classList.remove("hidden");
+    document.querySelector(".create-contact").classList.add("hidden");
   };
 
   return (
-    <form className="create-contact hidden" onSubmit={onSubmit}>
-      <div className="create-contact__photo">
+    <form className="form-contact create-contact hidden" onSubmit={onSubmit}>
+      <div className="form-contact__photo">
         <label>Photo</label>
         <img src={avatar} alt="Profile Photo" />
-        <div className="create-contact__container">
+        <div className="form-contact__container">
           <button type="button" className="btn btn--white">
             Change
           </button>
@@ -76,7 +82,7 @@ const CreateContact = ({ onAdd, showCreateContact }) => {
         </div>
       </div>
 
-      <div className="create-contact__inputs">
+      <div className="form-contact__inputs">
         <label>Name</label>
         <input
           type="text"
@@ -85,7 +91,7 @@ const CreateContact = ({ onAdd, showCreateContact }) => {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <div className="create-contact__inputs">
+      <div className="form-contact__inputs">
         <label>Email address</label>
         <input
           id="email_address"
@@ -95,7 +101,7 @@ const CreateContact = ({ onAdd, showCreateContact }) => {
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-      <div className="create-contact__inputs">
+      <div className="form-contact__inputs">
         <label>Phone number</label>
         <input
           type="text"
@@ -104,7 +110,7 @@ const CreateContact = ({ onAdd, showCreateContact }) => {
           onChange={(e) => setPhone(e.target.value)}
         />
       </div>
-      <div className="create-contact__buttons">
+      <div className="form-contact__buttons">
         <button type="button" className="btn btn--white" onClick={onCancel}>
           Cancel
         </button>
