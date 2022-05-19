@@ -1,28 +1,38 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import avatar from "../images/avatar.png";
 import Icon from "./Icons";
 
 const CreateContact = ({ onAdd, setTitle, setShowForm }) => {
-  /* const initialFormState = {
-    id: null,
-    avatar: "",
-    name: "",
-    phone_number: "",
-    email: "",
-  };
-  const [contact, setContact] = useState(initialFormState)*/
-  //const [photo, setPhoto] = useState('');
+  const refUpload = useRef();
+  const [photo, setPhoto] = useState(null);
+  const [imgData, setImgData] = useState(avatar);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone_number, setPhone] = useState("");
   //const [label, setLabel] = useState('');
 
+  const onChangePicture = (e) => {
+    if (e.target.files[0]) {
+      console.log("picture: ", e.target.files);
+      setPhoto(e.target.files[0]);
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setImgData(reader.result);
+      });
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    e.target.value = "";
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
 
-    onAdd({ name, email, phone_number });
+    onAdd({ avatar: imgData, name, email, phone_number });
 
+    setImgData(avatar);
+    //setPhoto(null);
     setName("");
     setEmail("");
     setPhone("");
@@ -34,6 +44,8 @@ const CreateContact = ({ onAdd, setTitle, setShowForm }) => {
   };
 
   const onCancel = () => {
+    setImgData(avatar);
+    setPhoto(null);
     setName("");
     setEmail("");
     setPhone("");
@@ -44,15 +56,26 @@ const CreateContact = ({ onAdd, setTitle, setShowForm }) => {
     document.querySelector(".create-contact").classList.add("hidden");
   };
 
+  const uploadClick = () => {
+    refUpload.current.click();
+  };
+
   return (
     <form className="form-contact create-contact hidden" onSubmit={onSubmit}>
       <div className="form-contact__photo">
         <label>Photo</label>
-        <img src={avatar} alt="Profile Photo" />
+        <div className="form-contact__photo-wrapper">
+          <img src={imgData} alt="Profile Photo" />
+        </div>
         <div className="form-contact__container">
-          <button type="button" className="btn btn--white">
+          <button
+            type="button"
+            onClick={uploadClick}
+            className="btn btn--white"
+          >
             Change
           </button>
+          <input ref={refUpload} type="file" onChange={onChangePicture} />
           <div className="dropdown">
             <button type="button" className="dropdown-btn btn btn--white">
               <span>Labels</span>

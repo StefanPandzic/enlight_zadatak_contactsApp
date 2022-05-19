@@ -1,9 +1,11 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import avatar from "../images/avatar.png";
 import Icon from "./Icons";
 
 const EditContact = (props) => {
+  const refUpload = useRef();
+  const [photo, setPhoto] = useState(null);
   const [contact, setContact] = useState(props.currentContact);
 
   useEffect(() => {
@@ -15,6 +17,20 @@ const EditContact = (props) => {
   //const [email, setEmail] = useState("");
   //const [phone_number, setPhone] = useState("");
   //const [label, setLabel] = useState('');
+
+  const onChangePicture = (e) => {
+    if (e.target.files[0]) {
+      console.log("picture: ", e.target.files);
+      setPhoto(e.target.files[0]);
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setContact.avatar(reader.result);
+      });
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    e.target.value = "";
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -47,15 +63,28 @@ const EditContact = (props) => {
     setPhone("");*/
   };
 
+  //TODO FIX BUG on Change Image
+
+  const uploadClick = () => {
+    refUpload.current.click();
+  };
+
   return (
     <form className="form-contact edit-contact" onSubmit={onSubmit}>
       <div className="form-contact__photo">
         <label>Photo</label>
-        <img src={avatar} alt="Profile Photo" />
+        <div className="form-contact__photo-wrapper">
+          <img src={props.currentContact.avatar} alt="Profile Photo" />
+        </div>
         <div className="form-contact__container">
-          <button type="button" className="btn btn--white">
+          <button
+            type="button"
+            onClick={uploadClick}
+            className="btn btn--white"
+          >
             Change
           </button>
+          <input ref={refUpload} type="file" onChange={onChangePicture} />
           <div className="dropdown">
             <button type="button" className="dropdown-btn btn btn--white">
               <span>Labels</span>

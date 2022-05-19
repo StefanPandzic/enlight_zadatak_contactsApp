@@ -8,9 +8,13 @@ import CreateContact from "./CreateContact";
 import EditContact from "./EditContact";
 import Route from "./Route";
 import SearchBar from "./SearchBar";
+import mockdata from "../data/MOCK_DATA.json";
+import avatar from "../images/avatar.png";
 
 const App = () => {
   //Data
+  //const contactData = JSON.parse(mockdata);
+
   const contactData = [
     {
       id: 1,
@@ -56,6 +60,7 @@ const App = () => {
 
   const initialFormState = {
     id: null,
+    avatar: { avatar },
     name: "",
     phone_number: "",
     email: "",
@@ -72,6 +77,7 @@ const App = () => {
 
   useEffect(() => {
     updateContactList(contacts);
+    console.log(contacts);
   }, [contacts, editing]);
 
   // Add Contact
@@ -83,7 +89,6 @@ const App = () => {
 
   // Delete Contact
   const deleteContact = (id) => {
-    setEditing(false);
     setContacts(contacts.filter((contact) => contact.id !== id));
   };
 
@@ -106,6 +111,7 @@ const App = () => {
 
     setCurrentContact({
       id: contact.id,
+      avatar: contact.avatar,
       name: contact.name,
       phone_number: contact.phone_number,
       email: contact.email,
