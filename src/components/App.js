@@ -6,9 +6,7 @@ import ContactsList from "./ContactsList";
 import Icon from "./Icons";
 import CreateContact from "./CreateContact";
 import EditContact from "./EditContact";
-import Route from "./Route";
 import SearchBar from "./SearchBar";
-import mockdata from "../data/MOCK_DATA.json";
 import avatar from "../images/avatar.png";
 
 const App = () => {
@@ -72,19 +70,35 @@ const App = () => {
   const [editing, setEditing] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("Contacts");
-
+  const [filterContacts, setFilterContacts] = useState("all");
   const [foundContacts, setFoundContacts] = useState(contacts);
+  const [favoritesContacts, setFavoritesContacts] = useState(contacts);
 
+  //Rerender after states Change
   useEffect(() => {
     updateContactList(contacts);
-    console.log(contacts);
+    setFavoritesContacts(contacts.filter((contact) => contact.favorite));
   }, [contacts, editing]);
+
+  const updateContactList = (results) => {
+    setFoundContacts(results);
+  };
 
   // Add Contact
   const addContact = (contact) => {
     const id = Math.floor(Math.random() * 10000) + 1;
     const newContact = { id, ...contact };
     setContacts([...contacts, newContact]);
+  };
+
+  // Create Function
+  const onCreate = () => {
+    setShowForm(true);
+
+    if (!editing) {
+      document.querySelector(".contacts").classList.add("hidden");
+      document.querySelector(".create-contact").classList.remove("hidden");
+    }
   };
 
   // Delete Contact
@@ -94,12 +108,19 @@ const App = () => {
 
   // Edit Contact
   const editContact = (id, updatedContact) => {
-    /* setEditing(false);
-    setTitle("Contacts");
-    setShowForm(false);
-*/
     setContacts(
       contacts.map((contact) => (contact.id === id ? updatedContact : contact))
+    );
+  };
+
+  //Toggle
+  const toggleFavorite = (id) => {
+    setContacts(
+      contacts.map((contact) =>
+        contact.id === id
+          ? { ...contact, favorite: !contact.favorite }
+          : contact
+      )
     );
   };
 
@@ -118,18 +139,18 @@ const App = () => {
     });
   };
 
-  const onCreate = () => {
-    setShowForm(true);
+  //Filter
+  /*
+  const showAllContact = (e) => {
+    e.preventDefault();
 
-    if (!editing) {
-      document.querySelector(".contacts").classList.add("hidden");
-      document.querySelector(".create-contact").classList.remove("hidden");
-    }
+    setFoundContacts(contacts);
   };
 
-  const updateContactList = (results) => {
-    setFoundContacts(results);
-  };
+  const showFavorites = (e) => {
+    e.preventDefault();
+    console.log(e);
+  };*/
 
   return (
     <div className="container">
@@ -155,10 +176,10 @@ const App = () => {
               {contacts.length}
             </div>
           </a>
-          <a className="link" href="/favorites">
+          <a className="link" href="/">
             <Icon name="star" size={22} />
             <span>Favorites</span>
-            <div className="link__notification">{foundContacts.length}</div>
+            <div className="link__notification">{favoritesContacts.length}</div>
           </a>
           <div className="labels">
             <h4 className="header-4">Labels</h4>
@@ -168,21 +189,21 @@ const App = () => {
               <a href="#" className="link">
                 <Icon name="ribbon" size={22} />
                 <span>Work</span>
-                <div className="link__notification">2</div>
+                <div className="link__notification">0</div>
               </a>
             </li>
             <li className="labels__item">
               <a href="#" className="link">
                 <Icon name="ribbon" size={22} />
                 <span>Family</span>
-                <div className="link__notification">6</div>
+                <div className="link__notification">0</div>
               </a>
             </li>
             <li className="labels__item">
               <a href="#" className="link">
                 <Icon name="ribbon" size={22} />
                 <span>Friends</span>
-                <div className="link__notification">4</div>
+                <div className="link__notification">0</div>
               </a>
             </li>
           </ul>
@@ -200,7 +221,7 @@ const App = () => {
         <ContactsList
           onDelete={deleteContact}
           onEdit={editRow}
-          contacts={contacts}
+          onToggle={toggleFavorite}
           foundContacts={foundContacts}
         />
         {editing ? (
@@ -220,17 +241,6 @@ const App = () => {
             setShowForm={setShowForm}
           />
         )}
-
-        <Route path="/favorites">
-          <section className="heading">
-            <h1 className="header-1">Favorites</h1>
-          </section>
-          <ContactsList
-            onDelete={deleteContact}
-            onEdit={editRow}
-            contacts={contacts}
-          />
-        </Route>
       </main>
     </div>
   );

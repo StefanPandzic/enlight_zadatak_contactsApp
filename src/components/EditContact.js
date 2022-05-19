@@ -1,6 +1,5 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
-import avatar from "../images/avatar.png";
+import { useState, useRef } from "react";
 import Icon from "./Icons";
 
 const EditContact = (props) => {
@@ -8,23 +7,12 @@ const EditContact = (props) => {
   const [photo, setPhoto] = useState(null);
   const [contact, setContact] = useState(props.currentContact);
 
-  useEffect(() => {
-    setContact(props.currentContact);
-    console.log("effect", props.currentContact);
-  }, [props]);
-  //const [photo, setPhoto] = useState('');
-  //const [name, setName] = useState("");
-  //const [email, setEmail] = useState("");
-  //const [phone_number, setPhone] = useState("");
-  //const [label, setLabel] = useState('');
-
   const onChangePicture = (e) => {
     if (e.target.files[0]) {
-      console.log("picture: ", e.target.files);
       setPhoto(e.target.files[0]);
       const reader = new FileReader();
       reader.addEventListener("load", () => {
-        setContact.avatar(reader.result);
+        setContact({ ...contact, avatar: reader.result });
       });
       reader.readAsDataURL(e.target.files[0]);
     }
@@ -47,10 +35,6 @@ const EditContact = (props) => {
     props.setTitle("Contacts");
     props.setShowForm(false);
     document.querySelector(".contacts").classList.remove("hidden");
-    /*setName("");
-    setEmail("");
-    setPhone("");*/
-    //props.setEditing();
   };
 
   const onCancel = () => {
@@ -58,12 +42,7 @@ const EditContact = (props) => {
     props.setTitle("Contacts");
     props.setShowForm(false);
     document.querySelector(".contacts").classList.remove("hidden");
-    /* setName("");
-    setEmail("");
-    setPhone("");*/
   };
-
-  //TODO FIX BUG on Change Image
 
   const uploadClick = () => {
     refUpload.current.click();
@@ -74,7 +53,7 @@ const EditContact = (props) => {
       <div className="form-contact__photo">
         <label>Photo</label>
         <div className="form-contact__photo-wrapper">
-          <img src={props.currentContact.avatar} alt="Profile Photo" />
+          <img src={contact.avatar} alt="Profile Photo" />
         </div>
         <div className="form-contact__container">
           <button

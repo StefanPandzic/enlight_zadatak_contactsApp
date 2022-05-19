@@ -1,13 +1,7 @@
 import React from "react";
 import Icon from "./Icons";
 
-const ContactItem = ({ onDelete, onEdit, contact }) => {
-  //const ref = useRef();
-  //const editContact = e;
-  /* const editContact = () => {
-    onEdit(contact.id);
-  };*/
-
+const ContactItem = ({ onDelete, onEdit, onToggle, contact }) => {
   return (
     <tr className="contact-item">
       <td className="contact-item__full-name">
@@ -19,9 +13,16 @@ const ContactItem = ({ onDelete, onEdit, contact }) => {
       <td className="contact-item__email">{contact.email}</td>
       <td className="contact-item__phone-number">{contact.phone_number}</td>
       <td className="contact-item__control">
-        <a className="favorite">
-          <Icon name="star" size={22} />
-        </a>
+        {contact.favorite ? (
+          <a className="favorite" onClick={() => onToggle(contact.id)}>
+            <Icon name="star-dark" size={22} />
+          </a>
+        ) : (
+          <a className="favorite" onClick={() => onToggle(contact.id)}>
+            <Icon name="star" size={22} />
+          </a>
+        )}
+
         <a className="trash" onClick={() => onDelete(contact.id)}>
           <Icon name="trash" size={22} />
         </a>
