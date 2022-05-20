@@ -96,7 +96,6 @@ const App = () => {
   }, [contacts, filterContacts, editing]);
 
   const updateContactList = (results) => {
-    console.log("res", results);
     setActiveContacts(results);
     console.log("active", activeContacts);
   };
@@ -288,11 +287,9 @@ const App = () => {
       </div>
       <main className="main-section">
         <SearchBar
-          activeContacts={activeContacts}
           contacts={contacts}
           favoritesContacts={favoritesContacts}
           filterContacts={filterContacts}
-          checkFilter={checkFilter}
           updateContactList={updateContactList}
         />
         <section className="heading">
