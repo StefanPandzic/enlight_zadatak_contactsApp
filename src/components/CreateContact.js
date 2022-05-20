@@ -10,7 +10,6 @@ const CreateContact = ({ onAdd, setTitle, setShowForm }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone_number, setPhone] = useState("");
-  //const [label, setLabel] = useState('');
 
   const onChangePicture = (e) => {
     if (e.target.files[0]) {
@@ -32,7 +31,6 @@ const CreateContact = ({ onAdd, setTitle, setShowForm }) => {
     onAdd({ avatar: imgData, name, email, phone_number });
 
     setImgData(avatar);
-    //setPhoto(null);
     setName("");
     setEmail("");
     setPhone("");

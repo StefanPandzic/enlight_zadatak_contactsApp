@@ -1,21 +1,39 @@
 .modal-window {
   @include absCenter;
   border-radius: 3px;
-  padding: 2rem 4rem;
+  padding: 1rem 3rem;
   background-color: $color-white;
   box-shadow: 0 2rem 4rem rgba($color-black, 0.2);
   border-radius: 1rem;
-  /*display: grid;
-  grid-template-rows: 1fr 1fr;
-  row-gap: 1rem;*/
+
+  &__icon {
+    grid-row: 1 / 2;
+    align-self: center;
+    margin-right: 2rem;
+  }
+
+  &__text {
+    margin-top: 2rem;
+    grid-row: 1 / 2;
+    margin: 1rem 0;
+  }
 
   &__buttons {
     display: flex;
     justify-content: end;
     align-items: center;
+    grid-row: 2 / -1;
+    grid-column: 1 / -1;
   }
 
   &__mbtn {
     margin-left: 2rem !important;
   }
+}
+
+.modal-content {
+  display: grid !important;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: min-content 40rem;
+  align-items: center;
 }

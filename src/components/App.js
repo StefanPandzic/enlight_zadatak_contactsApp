@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import logo from "../images/logo.png";
+import del_icon from "../images/Illustration.png";
 import faker from "faker";
 import ContactsList from "./ContactsList";
 import Icon from "./Icons";
@@ -68,40 +69,49 @@ const App = () => {
   //Setting State
   const [contacts, setContacts] = useState(contactData);
   const [currentContact, setCurrentContact] = useState(initialFormState);
+
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(0);
   //Form stanje
   const [editing, setEditing] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
   const [title, setTitle] = useState("Contacts");
 
-  const [favoritesContacts, setFavoritesContacts] = useState(contacts);
+  const [favoritesContacts, setFavoritesContacts] = useState(
+    contactData.filter((contact) => contact.favorite)
+  );
 
-  const [showModal, setShowModal] = useState(false);
-  const [deleteId, setDeleteId] = useState(0);
   // Stanje za Navigaciju
   const [filterContacts, setFilterContacts] = useState("allContacts");
   //contacti koji se renderuju
-  const [foundContacts, setFoundContacts] = useState(contacts);
+  const [activeContacts, setActiveContacts] = useState(contacts);
 
   //Rerender after states Change
+  useEffect(() => {}, [activeContacts]);
+
   useEffect(() => {
-    updateContactList(contacts);
-    //console.log("contacts", contacts);
-    //console.log("found", foundContacts);
     setFavoritesContacts(contacts.filter((contact) => contact.favorite));
-  }, [contacts, editing]);
+    checkFilter();
+  }, [contacts, filterContacts, editing]);
 
   const updateContactList = (results) => {
-    setFoundContacts(results);
-    //console.log("found+++", foundContacts);
+    console.log("res", results);
+    setActiveContacts(results);
+    console.log("active", activeContacts);
+  };
+
+  const checkFilter = () => {
+    if (filterContacts === "favorites") {
+      updateContactList(contacts.filter((contact) => contact.favorite));
+    } else {
+      updateContactList(contacts);
+    }
   };
 
   // Add Contact
   const addContact = (contact) => {
     const id = Math.floor(Math.random() * 10000) + 1;
-    /*
-    const id = contacts.map((contact) => (contact.id === id ? updatedContact : contact))*/
-
     const newContact = { id, ...contact };
     setContacts([...contacts, newContact]);
   };
@@ -109,9 +119,9 @@ const App = () => {
   // Create Function
   const onCreate = () => {
     setShowForm(true);
-    setTitle("Create Contact");
 
     if (!editing) {
+      setTitle("Create Contact");
       document.querySelector(".contacts").classList.add("hidden");
       document.querySelector(".create-contact").classList.remove("hidden");
     }
@@ -126,6 +136,7 @@ const App = () => {
 
   const delContact = (id) => {
     setContacts(contacts.filter((contact) => contact.id !== id));
+
     setShowModal(false);
   };
 
@@ -169,10 +180,8 @@ const App = () => {
 
     if (eventKey === "favorites") {
       setTitle("Favorites");
-      updateContactList(favoritesContacts);
     } else {
       setTitle("Contacts");
-      updateContactList(contacts);
     }
   };
 
@@ -185,8 +194,15 @@ const App = () => {
         autoFocus={false}
         onHide={() => setShowModal(false)}
       >
-        <h2 className="header-2">Delete Contact</h2>
-        <p>Are you sure you want to delete this contact?</p>
+        <img
+          className="modal-window__icon"
+          src={del_icon}
+          alt="Delete Icon"
+        ></img>
+        <div className="modal-window__text">
+          <h2 className="header-2">Delete Contact</h2>
+          <p>Are you sure you want to delete this contact?</p>
+        </div>
         <div className="modal-window__buttons">
           <button
             className="btn modal-window__mbtn btn--white"
@@ -272,7 +288,11 @@ const App = () => {
       </div>
       <main className="main-section">
         <SearchBar
+          activeContacts={activeContacts}
           contacts={contacts}
+          favoritesContacts={favoritesContacts}
+          filterContacts={filterContacts}
+          checkFilter={checkFilter}
           updateContactList={updateContactList}
         />
         <section className="heading">
@@ -282,7 +302,7 @@ const App = () => {
           onDelete={showDeleteModal}
           onEdit={editRow}
           onToggle={toggleFavorite}
-          foundContacts={foundContacts}
+          activeContacts={activeContacts}
         />
         {editing ? (
           <EditContact

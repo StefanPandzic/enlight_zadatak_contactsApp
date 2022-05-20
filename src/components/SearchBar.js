@@ -1,24 +1,42 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import Icon from "./Icons";
 
-const SearchBar = ({ updateContactList, contacts }) => {
+const SearchBar = ({
+  updateContactList,
+  filterContacts,
+  contacts,
+  favoritesContacts,
+}) => {
   const filter = (e) => {
     const keyword = e.target.value;
 
     if (keyword !== "") {
-      const results = contacts.filter((contact) => {
-        if (
-          contact.name.toLowerCase().includes(keyword.toLowerCase()) ||
-          contact.email.toLowerCase().includes(keyword.toLowerCase()) ||
-          contact.phone_number.toLowerCase().includes(keyword.toLowerCase())
-        )
-          return contact;
-        // Use the toLowerCase() method to make it case-insensitive
-      });
-      updateContactList(results);
+      if (filterContacts === "favorites") {
+        const results = favoritesContacts.filter((contact) => {
+          if (
+            contact.name.toLowerCase().includes(keyword.toLowerCase()) ||
+            contact.email.toLowerCase().includes(keyword.toLowerCase()) ||
+            contact.phone_number.toLowerCase().includes(keyword.toLowerCase())
+          )
+            return contact;
+        });
+        updateContactList(results);
+      } else {
+        const results = contacts.filter((contact) => {
+          if (
+            contact.name.toLowerCase().includes(keyword.toLowerCase()) ||
+            contact.email.toLowerCase().includes(keyword.toLowerCase()) ||
+            contact.phone_number.toLowerCase().includes(keyword.toLowerCase())
+          )
+            return contact;
+        });
+        updateContactList(results);
+      }
+    } else if (filterContacts === "favorites") {
+      updateContactList(favoritesContacts);
     } else {
       updateContactList(contacts);
-      // If the text field is empty, show all users
     }
   };
 
