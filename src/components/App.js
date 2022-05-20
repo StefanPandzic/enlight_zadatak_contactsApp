@@ -8,11 +8,11 @@ import CreateContact from "./CreateContact";
 import EditContact from "./EditContact";
 import SearchBar from "./SearchBar";
 import avatar from "../images/avatar.png";
+import Modal from "react-bootstrap/Modal";
+import Nav from "react-bootstrap/Nav";
 
 const App = () => {
   //Data
-  //const contactData = JSON.parse(mockdata);
-
   const contactData = [
     {
       id: 1,
@@ -73,6 +73,8 @@ const App = () => {
   const [filterContacts, setFilterContacts] = useState("all");
   const [foundContacts, setFoundContacts] = useState(contacts);
   const [favoritesContacts, setFavoritesContacts] = useState(contacts);
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(0);
 
   //Rerender after states Change
   useEffect(() => {
@@ -94,6 +96,7 @@ const App = () => {
   // Create Function
   const onCreate = () => {
     setShowForm(true);
+    setTitle("Create Contact");
 
     if (!editing) {
       document.querySelector(".contacts").classList.add("hidden");
@@ -102,8 +105,15 @@ const App = () => {
   };
 
   // Delete Contact
-  const deleteContact = (id) => {
+
+  const showDeleteModal = (id) => {
+    setDeleteId(id);
+    setShowModal(true);
+  };
+
+  const delContact = (id) => {
     setContacts(contacts.filter((contact) => contact.id !== id));
+    setShowModal(false);
   };
 
   // Edit Contact
@@ -154,6 +164,30 @@ const App = () => {
 
   return (
     <div className="container">
+      <Modal
+        show={showModal}
+        bsPrefix="modal-window"
+        animation={false}
+        autoFocus={false}
+        onHide={() => setShowModal(false)}
+      >
+        <h2 className="header-2">Delete Contact</h2>
+        <p>Are you sure you want to delete this contact?</p>
+        <div className="modal-window__buttons">
+          <button
+            className="btn modal-window__mbtn btn--white"
+            onClick={() => setShowModal(false)}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn modal-window__mbtn btn--red"
+            onClick={() => delContact(deleteId)}
+          >
+            Delete
+          </button>
+        </div>
+      </Modal>
       <div className="sidebar">
         <header className="header">
           <img src={logo} alt="Logo" className="logo" />
@@ -169,18 +203,27 @@ const App = () => {
           </button>
         </div>
         <nav className="sidebar__nav">
-          <a className="link link--active" href="/">
-            <Icon name="contact" size={22} />
-            <span>Contacts</span>
-            <div className="link__notification link__notification--active">
-              {contacts.length}
-            </div>
-          </a>
-          <a className="link" href="/">
-            <Icon name="star" size={22} />
-            <span>Favorites</span>
-            <div className="link__notification">{favoritesContacts.length}</div>
-          </a>
+          <Nav defaultActiveKey="/">
+            <Nav.Item>
+              <Nav.Link bsPrefix="link link--active">
+                <Icon name="contact" size={22} />
+                <span>Contacts</span>
+                <div className="link__notification link__notification--active">
+                  {contacts.length}
+                </div>
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link bsPrefix="link" eventKey="link-favorites">
+                <Icon name="star" size={22} />
+                <span>Favorites</span>
+                <div className="link__notification">
+                  {favoritesContacts.length}
+                </div>
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+
           <div className="labels">
             <h4 className="header-4">Labels</h4>
           </div>
@@ -219,7 +262,7 @@ const App = () => {
           <h1 className="header-1">{title}</h1>
         </section>
         <ContactsList
-          onDelete={deleteContact}
+          onDelete={showDeleteModal}
           onEdit={editRow}
           onToggle={toggleFavorite}
           foundContacts={foundContacts}

@@ -1,8 +1,10 @@
 @import "abstract/variables";
+@import "abstract/mixins";
 
 @import "base/base";
 @import "base/typography";
 
+@import "components/modal-window";
 @import "components/form-contact";
 @import "components/search";
 @import "components/button";

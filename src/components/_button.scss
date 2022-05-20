@@ -26,6 +26,11 @@
     border: 2px solid $color-border;
   }
 
+  &--red {
+    background-color: $color-red;
+    border: 2px solid $color-border;
+  }
+
   &--create-contact {
     &:hover {
       transform: translateY(-3px);
