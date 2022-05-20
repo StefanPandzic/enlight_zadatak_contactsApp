@@ -62,33 +62,46 @@ const App = () => {
     name: "",
     phone_number: "",
     email: "",
+    favorite: false,
   };
 
   //Setting State
   const [contacts, setContacts] = useState(contactData);
   const [currentContact, setCurrentContact] = useState(initialFormState);
+  //Form stanje
   const [editing, setEditing] = useState(false);
   const [showForm, setShowForm] = useState(false);
+
   const [title, setTitle] = useState("Contacts");
-  const [filterContacts, setFilterContacts] = useState("all");
-  const [foundContacts, setFoundContacts] = useState(contacts);
+
   const [favoritesContacts, setFavoritesContacts] = useState(contacts);
+
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(0);
+  // Stanje za Navigaciju
+  const [filterContacts, setFilterContacts] = useState("allContacts");
+  //contacti koji se renderuju
+  const [foundContacts, setFoundContacts] = useState(contacts);
 
   //Rerender after states Change
   useEffect(() => {
     updateContactList(contacts);
+    //console.log("contacts", contacts);
+    //console.log("found", foundContacts);
     setFavoritesContacts(contacts.filter((contact) => contact.favorite));
   }, [contacts, editing]);
 
   const updateContactList = (results) => {
     setFoundContacts(results);
+    //console.log("found+++", foundContacts);
   };
 
   // Add Contact
   const addContact = (contact) => {
     const id = Math.floor(Math.random() * 10000) + 1;
+    /*
+    const id = contacts.map((contact) => (contact.id === id ? updatedContact : contact))*/
+
     const newContact = { id, ...contact };
     setContacts([...contacts, newContact]);
   };
@@ -146,21 +159,22 @@ const App = () => {
       name: contact.name,
       phone_number: contact.phone_number,
       email: contact.email,
+      favorite: contact.favorite,
     });
   };
 
   //Filter
-  /*
-  const showAllContact = (e) => {
-    e.preventDefault();
+  const handleSelect = (eventKey) => {
+    setFilterContacts(eventKey);
 
-    setFoundContacts(contacts);
+    if (eventKey === "favorites") {
+      setTitle("Favorites");
+      updateContactList(favoritesContacts);
+    } else {
+      setTitle("Contacts");
+      updateContactList(contacts);
+    }
   };
-
-  const showFavorites = (e) => {
-    e.preventDefault();
-    console.log(e);
-  };*/
 
   return (
     <div className="container">
@@ -203,18 +217,18 @@ const App = () => {
           </button>
         </div>
         <nav className="sidebar__nav">
-          <Nav defaultActiveKey="/">
+          <Nav activeKey={filterContacts} onSelect={handleSelect}>
             <Nav.Item>
-              <Nav.Link bsPrefix="link link--active">
+              <Nav.Link eventKey="allContacts" bsPrefix="link">
                 <Icon name="contact" size={22} />
                 <span>Contacts</span>
-                <div className="link__notification link__notification--active">
+                <div className="link__notification link__notification">
                   {contacts.length}
                 </div>
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link bsPrefix="link" eventKey="link-favorites">
+              <Nav.Link bsPrefix="link" eventKey="favorites">
                 <Icon name="star" size={22} />
                 <span>Favorites</span>
                 <div className="link__notification">
@@ -257,7 +271,10 @@ const App = () => {
         </nav>
       </div>
       <main className="main-section">
-        <SearchBar contacts={contacts} updateContactList={updateContactList} />
+        <SearchBar
+          contacts={contacts}
+          updateContactList={updateContactList}
+        />
         <section className="heading">
           <h1 className="header-1">{title}</h1>
         </section>

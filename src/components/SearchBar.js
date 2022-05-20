@@ -7,7 +7,12 @@ const SearchBar = ({ updateContactList, contacts }) => {
 
     if (keyword !== "") {
       const results = contacts.filter((contact) => {
-        return contact.name.toLowerCase().startsWith(keyword.toLowerCase());
+        if (
+          contact.name.toLowerCase().includes(keyword.toLowerCase()) ||
+          contact.email.toLowerCase().includes(keyword.toLowerCase()) ||
+          contact.phone_number.toLowerCase().includes(keyword.toLowerCase())
+        )
+          return contact;
         // Use the toLowerCase() method to make it case-insensitive
       });
       updateContactList(results);
@@ -19,7 +24,7 @@ const SearchBar = ({ updateContactList, contacts }) => {
 
   return (
     <form action="/" className="search">
-      <button className="search__button">
+      <button type="button" className="search__button">
         <Icon name="search" size={16} />
       </button>
       <input

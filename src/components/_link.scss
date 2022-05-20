@@ -11,10 +11,6 @@
 }
 
 .link {
-  &--active {
-    background-color: $color-secondary;
-  }
-
   span {
     margin-left: 0.7rem;
     flex-grow: 1;
@@ -30,5 +26,14 @@
     &--active {
       background-color: $color-white;
     }
+  }
+}
+
+//bootstrap Nav component
+.nav .link.active {
+  background-color: $color-secondary;
+
+  & > div {
+    background-color: $color-white;
   }
 }
